@@ -69,11 +69,10 @@ try:
             circles = np.round(circles[0, :]).astype("int")
             pos_x = circles[0][0]
             pos_y = circles[0][1]
-            print(pos_x, pos_y)
             cv2.circle(frame, (int(pos_x), int(pos_y)), int(circles[0][2]), (0, 255, 0), 4)
             cv2.circle(frame, (int(pos_x), int(pos_y)), 3, (0, 0, 255), 3)
-            ux = (400 - pos_x) * 0.7  # Рассчитываем скорости при помощи пропорционального ПИД-регулятора
-            uy = (300 - pos_y) * 0.7
+            ux = (width / 2 - pos_x) * 0.6  # Рассчитываем скорости при помощи пропорционального ПИД-регулятора
+            uy = (height / 2 - pos_y) * 0.8
 
             if pos_y < 250:  #  В зависммости от положения куба, выбираем действие
                 write_to_Arduino(1)
