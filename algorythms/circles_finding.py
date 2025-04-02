@@ -1,11 +1,11 @@
-import cv2
+import cv2  # Импортируем библиотеки
 import numpy as np
 from picamera2 import Picamera2
 from datetime import datetime
 from time import sleep, time
 
 
-def write_image(image):
+def write_image(image):  # Функция отправки сообщения на медиа сервер
     global start
     out.write(image)
     now = time()
@@ -13,7 +13,9 @@ def write_image(image):
     if diff > 0:
         sleep(diff)
     start = now
-picam2 = Picamera2()
+
+
+picam2 = Picamera2()  # Инициализация камеры
 picam2.preview_configuration.main.size = (1920,1080)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.align()
@@ -34,11 +36,12 @@ out = cv2.VideoWriter(cam_data, cv2.CAP_GSTREAMER, 0, fps, (width, height), True
 
 
 start = time()
-if not out.isOpened():
+if not out.isOpened():  # Проверяем, открыт ли медиа-сервер
     raise Exception("can't open video writer")
+
 t1 = time()
 while True:
-    frame = picam2.capture_array()
+    frame = picam2.capture_array()  # Получааем изображение, обрабатываем его
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (17, 17), 17)
     circles = cv2.HoughCircles(
@@ -49,6 +52,6 @@ while True:
         for (x, y, r) in circles:
             cv2.circle(frame, (int(x), int(y)), int(r), (0, 255, 0), 4)
             cv2.circle(frame, (int(x), int(y)), 3, (0, 0, 255), 3)
-    write_image(frame)
+    write_image(frame)  # Отправляем изображение на медиа-сервер
     t2 = time()
     t1 = time()
