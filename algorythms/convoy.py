@@ -100,5 +100,3 @@ except KeyboardInterrupt:  # Закрываем сериал-порт
     stop_motors()
     print('cls')
     ser.close()
-
-g
